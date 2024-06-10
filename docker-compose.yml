@@ -1,0 +1,70 @@
+version: '3.9'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mydb"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  api:
+    image: ingestion_api:latest
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+      - db
+
+  worker:
+    image: anomaly_detection:latest
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - db_data:/data
+    depends_on:
+      - rabbitmq
+      - db
+    deploy:
+      mode: replicated
+      replicas: 1 # This is the initial number of replicas
+
+  autoscaler:
+    image: autoscaler:latest
+    environment:
+      RABBITMQ_API: 'http://rabbitmq:15672/api/queues/%2F/cloudtrail'
+      RABBITMQ_USER: guest
+      RABBITMQ_PASS: guest
+      SCALE_UP_THRESHOLD: 10
+      SCALE_DOWN_THRESHOLD: 2
+      MIN_WORKERS: 1
+      MAX_WORKERS: 10
+      CHECK_INTERVAL: 10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Share Docker socket with the container
+
+
+volumes:
+  db_data:
