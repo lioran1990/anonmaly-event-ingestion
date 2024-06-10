@@ -41,6 +41,23 @@ The Autoscaler monitors the length of the RabbitMQ queue and adjusts the number 
 
 ### RabbitMQ
 
+RabbitMQ is used as the messaging broker for the system, allowing the Ingestion API and Worker Service to communicate asynchronously.
+
+- **Image:** `rabbitmq:3-management`
+- **Role:** Message broker facilitating communication between services.
+- **Management UI:** Accessible at `http://localhost:15672` with default credentials (`guest` / `guest`).
+
+### PostgreSQL Database
+
+PostgreSQL is used as the database to store event and anomaly data processed by the Worker Service.
+
+- **Image:** `postgres:13`
+- **Role:** Persistent storage for event and anomaly data.
+- **Default Credentials:** 
+  - **User:** `user`
+  - **Password:** `pass`
+  - **Database:** `mydb`
+
 
 ## Setup and Running
 
@@ -94,6 +111,3 @@ The Autoscaler monitors the length of the RabbitMQ queue and adjusts the number 
 }'
 ```
 Feel free to copy this and save it as `README.md` in your project.
-
-
-   
