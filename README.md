@@ -62,23 +62,50 @@ PostgreSQL is used as the database to store event and anomaly data processed by 
 ## Setup and Running
 
 ### Prerequisites
-
 - Docker
 - Docker Compose
 - Docker Swarm (if using swarm mode)
 
-### Build and Deploy
+## Setup Instructions
+Before running the `run.sh` script, ensure the following steps are completed:
 
-1. **Run the Build Script:**
+### 1. Install Docker
+- Follow the installation instructions for Docker based on your operating system:
+  - [Docker for Windows](https://docs.docker.com/desktop/windows/install/)
+  - [Docker for Mac](https://docs.docker.com/desktop/mac/install/)
+  - [Docker for Linux](https://docs.docker.com/engine/install/)
 
-   Run the provided `build_images.sh` script to build the Docker images:
 
-   ```bash
-   chmod +x build_images.sh
-   ./build_images.sh
+### 2. Initialize Docker Swarm
+- Open a terminal and run:
+  ```bash
+  docker swarm init
+  ```
+
+### 3. Clone the repository
+- Clone the repository to your local machine:
+  ```bash
+  git clone https://github.com/lioran1990/anonmaly-event-ingestion.git
+    cd anonmaly-event-ingestion
+    ```
+
+### 4. Build and Deploy the Stack
+- Run the provided `run.sh` script to build the Docker images and deploy the stack:
+  ```bash
+  chmod +x run.sh
+  ./run.sh
+  ```
+  
+### 5. Verify Services
+- Ensure all services are running by checking the Docker services:
+    ```bash
+    docker service ls
+    ```
+
+### 6. Access the Ingestion API
+- The ingestion API should be accessible at http://localhost:5001/ingest
    
 ## Usage
-
 ### Ingestion API
 
 **Endpoint:** `/ingest`
@@ -99,7 +126,7 @@ PostgreSQL is used as the database to store event and anomaly data processed by 
 ```
 
 **CURL request:**
-```curl --location 'http://localhost:5001/ingest' \
+``` curl --location 'http://localhost:5001/ingest' \
 --header 'Content-Type: application/json' \
 --data '{
   "id": "123452",
@@ -110,4 +137,5 @@ PostgreSQL is used as the database to store event and anomaly data processed by 
   "affected_assets": ["asset1", "asset2"]
 }'
 ```
+
 Feel free to copy this and save it as `README.md` in your project.
