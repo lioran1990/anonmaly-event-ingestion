@@ -138,4 +138,6 @@ Before running the `run.sh` script, ensure the following steps are completed:
 }'
 ```
 
+**OpenAPI Documentation:** http://localhost:5001/docs
+
 Feel free to copy this and save it as `README.md` in your project.
