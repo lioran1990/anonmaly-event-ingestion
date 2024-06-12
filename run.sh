@@ -10,6 +10,10 @@ cleanup() {
 # Trap to catch script exit and run the cleanup function
 trap cleanup EXIT
 
+# Build the PostgreSQL image with the latest tag
+echo "Building PostgreSQL image..."
+docker build -t postgres_db:latest ./db
+
 # Build the ingestion API image with the latest tag
 echo "Building ingestion API image..."
 docker build -t ingestion_api:latest ./ingestion_api

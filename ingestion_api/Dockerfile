@@ -26,7 +26,7 @@ ENV PYTHONPATH=/app
 FROM base AS tester
 
 # Copy the tests
-COPY tests/ /app/tests/
+COPY tests/ /app/tests/*
 RUN pip install pytest
 RUN pytest tests/
 

@@ -17,5 +17,5 @@ class ConfigLoader:
             config['POSTGRES_DB'] = os.getenv('POSTGRES_DB', 'mydb')
             config['POSTGRES_USER'] = os.getenv('POSTGRES_USER', 'postgres')
             config['POSTGRES_PASSWORD'] = os.getenv('POSTGRES_PASSWORD', 'pass')
-            config['POSTGRES_HOST'] = os.getenv('POSTGRES_HOST', 'db')
+            config['POSTGRES_HOST'] = os.getenv('POSTGRES_HOST', 'to delete')
         return config

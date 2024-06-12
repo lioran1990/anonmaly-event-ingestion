@@ -1,8 +1,7 @@
-# test_api.py
-
 import pytest
 from httpx import AsyncClient
 from ingestion_api.api import app
+
 
 @pytest.mark.asyncio
 async def test_ingest_event_success(mocker):

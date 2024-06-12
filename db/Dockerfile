@@ -1,7 +1,13 @@
-FROM python:3.9-slim
+# Use the official PostgreSQL image as the base image
+FROM postgres:13
 
-WORKDIR /data
+# Set environment variables
+ENV POSTGRES_DB mydb
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD pass
 
-COPY setup_database.py .
+# Copy the initialization script into the container
+COPY init-db.sh /docker-entrypoint-initdb.d/
 
-CMD ["python", "setup_database.py"]
+# Expose the PostgreSQL port
+EXPOSE 5432

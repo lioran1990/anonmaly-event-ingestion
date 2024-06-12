@@ -33,18 +33,32 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and test ingestion_api Dockerfile
+    - name: Build anomaly_detection Dockerfile
+      id: anomaly_detection_builder_pusher
       run: |
-        docker build --target tester -f ingestion_api/Dockerfile -t ingestion-api:test .
-        docker build --target final -f ingestion_api/Dockerfile -t ingestion-api:latest .
-        docker push ingestion-api:latest
+        cd anomaly_detection
+        docker build -t anomaly_detection:latest -f Dockerfile --progress=plain .
+        docker push anomaly_detection:latest
+
+    - name: Build and tests ingestion_api Dockerfile
+      id: ingestion_api_builder_pusher
+      run: |
+        cd ingestion_api
+        docker build -t ingestion_api:latest -f Dockerfile --progress=plain .
+        docker push ingestion_api:latest
+
 
     - name: Build autoscaler Dockerfile
+      id: autoscaler_builder_pusher
       run: |
-        docker build -f autoscaler/Dockerfile -t autoscaler:latest .
+        cd autoscaler
+        docker build -t autoscaler:latest -f Dockerfile --progress=plain .
         docker push autoscaler:latest
 
-    - name: Build db Dockerfile
+
+    - name: Build postgres db Dockerfile
+      id: db_builder_pusher
       run: |
-        docker build -f db/Dockerfile -t db:latest .
+        cd db
+        docker build -t db:latest -f Dockerfile --progress=plain .
         docker push db:latest
