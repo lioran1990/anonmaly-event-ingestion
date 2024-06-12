@@ -28,7 +28,7 @@ FROM base AS tester
 # Copy the tests
 COPY tests/ /app/tests/
 RUN pip install pytest
-RUN pytest /app/tests/
+RUN pytest tests/
 
 FROM base AS final
 
