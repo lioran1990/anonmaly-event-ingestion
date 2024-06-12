@@ -1,15 +1,5 @@
 version: '3.9'
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    healthcheck:
-      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   db:
     image: postgres_db:latest
@@ -21,12 +11,22 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./init-to delete.sh:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d mydb"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d mydb" ]
       interval: 30s
       timeout: 10s
       retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   api:
     image: ingestion_api:latest
