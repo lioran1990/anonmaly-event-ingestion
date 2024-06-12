@@ -37,25 +37,27 @@ jobs:
       id: anomaly_detection_builder_pusher
       run: |
         cd anomaly_detection
-        docker build -t anomaly_detection:latest -f Dockerfile --progress=plain .
-        docker push anomaly_detection:latest
+        docker build -t ${DOCKER_USERNAME}/anomaly_detection:latest -f Dockerfile --progress=plain .
+        docker push ${DOCKER_USERNAME}/anomaly_detection:latest
 
     - name: Build and tests ingestion_api Dockerfile
       id: ingestion_api_builder
       run: |
         cd ingestion_api
-        docker build -t ingestion_api:latest -f Dockerfile --progress=plain .
-
+        docker build -t ${DOCKER_USERNAME}/ingestion_api:latest -f Dockerfile --progress=plain .
+        docker push ${DOCKER_USERNAME}/ingestion_api:latest
 
     - name: Build autoscaler Dockerfile
       id: autoscaler_builder
       run: |
         cd autoscaler
-        docker build -t autoscaler:latest -f Dockerfile --progress=plain .
+        docker build -t ${DOCKER_USERNAME}/autoscaler:latest -f Dockerfile --progress=plain .
+        docker push ${DOCKER_USERNAME}/autoscaler:latest
 
 
     - name: Build postgres db Dockerfile
       id: db_builder
       run: |
         cd db
-        docker build -t db:latest -f Dockerfile --progress=plain .
+        docker build -t ${DOCKER_USERNAME}/db:latest -f Dockerfile --progress=plain .
+        docker push ${DOCKER_USERNAME}/db:latest
