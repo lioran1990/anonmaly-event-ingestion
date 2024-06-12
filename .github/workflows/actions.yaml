@@ -28,7 +28,7 @@ jobs:
           ${{ runner.os }}-buildx-
 
     - name: Login to DockerHub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v3.2.0
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
@@ -41,24 +41,21 @@ jobs:
         docker push anomaly_detection:latest
 
     - name: Build and tests ingestion_api Dockerfile
-      id: ingestion_api_builder_pusher
+      id: ingestion_api_builder
       run: |
         cd ingestion_api
         docker build -t ingestion_api:latest -f Dockerfile --progress=plain .
-        docker push ingestion_api:latest
 
 
     - name: Build autoscaler Dockerfile
-      id: autoscaler_builder_pusher
+      id: autoscaler_builder
       run: |
         cd autoscaler
         docker build -t autoscaler:latest -f Dockerfile --progress=plain .
-        docker push autoscaler:latest
 
 
     - name: Build postgres db Dockerfile
-      id: db_builder_pusher
+      id: db_builder
       run: |
         cd db
         docker build -t db:latest -f Dockerfile --progress=plain .
-        docker push db:latest
